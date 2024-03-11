@@ -1,4 +1,4 @@
-package com.croman.clustering
+package com.croman.collaborative.filtering
 
 data class Entity(val id: String, val items: Set<Item>)
 

@@ -1,10 +1,14 @@
-package com.croman.clustering
+package com.croman.collaborative.filtering
 
+import com.croman.collaborative.filtering.Entity
+import com.croman.collaborative.filtering.EuclideanDistance
+import com.croman.collaborative.filtering.Item
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import com.croman.clustering.EuclideanDistance.Companion as calculator
 
 class EuclideanDistanceTest {
+
+    private val filter = EuclideanDistance()
 
     @Test
     fun calculateOneItem() {
@@ -22,7 +26,7 @@ class EuclideanDistanceTest {
             )
         )
 
-        calculator.calculate(e1,e2) shouldBe 0.5
+        filter.calculate(e1,e2) shouldBe 0.5
     }
 
     @Test
@@ -43,7 +47,7 @@ class EuclideanDistanceTest {
             )
         )
 
-        calculator.calculate(e1,e2) shouldBe (1.0/6)
+        filter.calculate(e1,e2) shouldBe (1.0/6)
     }
 
     @Test
@@ -62,7 +66,28 @@ class EuclideanDistanceTest {
             )
         )
 
-        calculator.calculate(e1,e2) shouldBe 0.5
+        filter.calculate(e1,e2) shouldBe 0.5
+    }
+
+    @Test
+    fun calculateSameItems() {
+        val e1 = Entity(
+            id = "1",
+            items = setOf(
+                Item("1", 7.0),
+                Item("2", 9.0),
+            )
+        )
+
+        val e2 = Entity(
+            id = "2",
+            items = setOf(
+                Item("1", 7.0),
+                Item("2", 9.0),
+            )
+        )
+
+        filter.calculate(e1,e2) shouldBe 1.0
     }
 
 }
