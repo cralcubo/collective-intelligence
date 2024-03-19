@@ -41,7 +41,7 @@ class PearsonCorrelationTest {
         val e2 = Entity(
             id = "2",
             items = setOf(
-                Item("1", 3.0),
+                Item("1", 5.0),
                 Item("2", 6.0),
             )
         )
@@ -50,7 +50,7 @@ class PearsonCorrelationTest {
     }
 
     @Test
-    fun calculateNoCommonItems() {
+    fun calculateNotEnoughItems() {
         val e1 = Entity(
             id = "2",
             items = setOf(
@@ -64,7 +64,6 @@ class PearsonCorrelationTest {
                 Item("1", 3.0),
             )
         )
-
         assertThrows<IllegalArgumentException> { filter.calculate(e1, e2) }
     }
 

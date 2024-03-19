@@ -25,7 +25,7 @@ class PearsonCorrelation: CollaborativeFilter {
             }.toList().let { Calculator(it) }
 
         // To calculate the correlation we should have at least
-        // 2 values in the calculator
+        // 2 values in the calculator (only 2 points can make a line to see if it correlates)
         return evalIf(calculator.N > 1) {
             calculator.run {
                 val numerator = (sumXY - (sumX * sumY / N))
