@@ -1,4 +1,6 @@
-package com.croman.collaborative.filtering
+package com.croman.utils
+
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class Entity(val id: String, val items: Set<Item>)
 

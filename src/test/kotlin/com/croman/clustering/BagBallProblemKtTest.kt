@@ -5,6 +5,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class BagBallProblemKtTest {
     
@@ -71,6 +72,11 @@ class BagBallProblemKtTest {
 
     @Nested
     inner class BestEntity {
+
+        @Test
+        fun noBalls() {
+            assertThrows<IllegalArgumentException> {  bestBall(5, emptyList()) }
+        }
 
         @Test
         fun oneBall() {

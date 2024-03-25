@@ -1,6 +1,8 @@
 package com.croman.collaborative.filtering
 
-interface CollaborativeFilter {
+import com.croman.utils.Entity
+
+interface SimilarityCalculator {
     /**
      * A value that indicate how close 2 entities are.
      * The closer they are (meaning the most similar they are)

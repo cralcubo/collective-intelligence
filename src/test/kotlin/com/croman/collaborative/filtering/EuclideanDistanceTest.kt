@@ -1,8 +1,7 @@
 package com.croman.collaborative.filtering
 
-import com.croman.collaborative.filtering.Entity
-import com.croman.collaborative.filtering.EuclideanDistance
-import com.croman.collaborative.filtering.Item
+import com.croman.utils.Entity
+import com.croman.utils.Item
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

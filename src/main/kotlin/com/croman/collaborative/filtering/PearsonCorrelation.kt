@@ -1,5 +1,6 @@
 package com.croman.collaborative.filtering
 
+import com.croman.utils.Entity
 import com.croman.utils.evalIf
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -13,7 +14,7 @@ import kotlin.math.sqrt
  * - 1: The highest correlation possible
  * - -1: The lowest correlation possible
  */
-class PearsonCorrelation: CollaborativeFilter {
+class PearsonCorrelation: SimilarityCalculator {
 
     override fun calculate(e1: Entity, e2: Entity): Double {
         // find common items and proceed with calculations

@@ -1,5 +1,7 @@
 package com.croman.collaborative.filtering
 
+import com.croman.utils.Entity
+import com.croman.utils.Item
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

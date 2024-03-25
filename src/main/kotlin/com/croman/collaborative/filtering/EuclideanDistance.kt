@@ -1,5 +1,6 @@
 package com.croman.collaborative.filtering
 
+import com.croman.utils.Entity
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -12,7 +13,7 @@ import kotlin.math.sqrt
  * To calculate how close the entities are we use the Pythagorean Theorem
  * (hypotenuse of a triangle)
  */
-class EuclideanDistance : CollaborativeFilter {
+class EuclideanDistance : SimilarityCalculator {
     /**
      * Calculates the Euclidean distance between 2 entities
      * based on the common items they have with each other

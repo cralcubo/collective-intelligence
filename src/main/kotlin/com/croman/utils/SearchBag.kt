@@ -39,7 +39,6 @@ fun <E> bestPairFinder(entities: List<E>, distanceCalculator: (E, E) -> Double):
             if (similarity == 0.0) {
                 remainsBag.addAll(bag1)
                 if (bestPair != null) {
-                    remainsBag.add(bestPair.first)
                     remainsBag.add(bestPair.second)
                 }
                 // add the resting elements to the bag
@@ -80,8 +79,10 @@ fun <E> bestPairFinder(entities: List<E>, distanceCalculator: (E, E) -> Double):
  * Brute force algorithm that will iterate on all the entities to find the entity
  * which distance is the closest to the mainEntity.
  * @param distanceCalculator The shortest the distance the better, being 0 the best distance possible
+ * @throws IllegalArgumentException if there are no [entities] to do a search
  */
 fun <E> bestEntityFinder(mainEntity: E, entities: List<E>, distanceCalculator: (E, E) -> Double) : Pair<E, List<E>> {
+    require(entities.isNotEmpty()) { "No entities to do a search" }
     val b1 = mutableListOf<E>()
     var bestEntity = entities.first()
     var bestDistance = distanceCalculator(mainEntity, bestEntity)
