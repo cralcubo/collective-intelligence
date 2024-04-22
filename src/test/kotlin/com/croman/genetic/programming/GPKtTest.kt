@@ -15,8 +15,8 @@ class GPKtTest {
         else it[2]
     }
     private val gtW = Wrapper(name = "gt", childCount = 2) {
-        if(it[0] > it[1]) 1.0
-        else 0.0
+        if(it[0] > it[1]) 1
+        else 0
     }
 
 
@@ -24,9 +24,9 @@ class GPKtTest {
     private fun ifTree() =
         Node(wrapper = ifW,
             children = listOf(
-                Node(gtW, listOf(ParamNode(0), ConstNode(3.0))), // First operation
-                Node(addW, listOf(ParamNode(1), ConstNode(5.0))), // gtW -> T
-                Node(subW, listOf(ParamNode(1), ConstNode(2.0))) // gtW -> F
+                Node(gtW, listOf(ParamNode(0), ConstNode(3))), // First operation
+                Node(addW, listOf(ParamNode(1), ConstNode(5))), // gtW -> T
+                Node(subW, listOf(ParamNode(1), ConstNode(2))) // gtW -> F
             )
         )
 
@@ -44,20 +44,20 @@ class GPKtTest {
 
     @Test
     fun isGreaterThanTest() {
-        gtTree().evaluate(3.0, -1.0) shouldBe 1.0
-        gtTree().evaluate(10.0, 100.0) shouldBe 0.0
+        gtTree().evaluate(3, -1) shouldBe 1
+        gtTree().evaluate(10, 100) shouldBe 0
     }
 
     @Test
     fun ifTest() {
-        ifTree().evaluate(2.0, 3.0) shouldBe 1.0
-        ifTree().evaluate(5.0, 10.0) shouldBe 15.0
+        ifTree().evaluate(2, 3) shouldBe 1
+        ifTree().evaluate(5, 10) shouldBe 15
     }
 
     @Test
     fun addTest() {
-        addTree().evaluate(99.0, 1.0) shouldBe 100.0
-        addTree().evaluate(5.0, 5.0) shouldBe 10.0
+        addTree().evaluate(99, 1) shouldBe 100
+        addTree().evaluate(5, 5) shouldBe 10.0
     }
 
 

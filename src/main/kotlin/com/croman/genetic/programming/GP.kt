@@ -6,11 +6,11 @@ import kotlin.random.Random
 class Wrapper(
     val childCount: Int,
     val name: String,
-    val function: (List<Double>) -> Double
+    val function: (List<Int>) -> Int
 )
 
 interface INode {
-    fun evaluate(vararg inputs: Double): Double
+    fun evaluate(vararg inputs: Int): Int
     fun display(indent: Int = 0)
 }
 
@@ -22,7 +22,7 @@ class Node(
     private val function = wrapper.function
     private val name = wrapper.name
 
-    override fun evaluate(vararg inputs: Double): Double {
+    override fun evaluate(vararg inputs: Int): Int {
         val results = children.map { it.evaluate(*inputs) }
         return function(results)
     }
@@ -35,7 +35,7 @@ class Node(
 
 // Parameter Node class
 class ParamNode(private val inputIndex: Int) : INode {
-    override fun evaluate(vararg inputs: Double): Double {
+    override fun evaluate(vararg inputs: Int): Int {
         return inputs[inputIndex]
     }
 
@@ -46,8 +46,8 @@ class ParamNode(private val inputIndex: Int) : INode {
 }
 
 // Constant Node class
-class ConstNode(private val value: Double): INode {
-    override fun evaluate(vararg inputs: Double): Double {
+class ConstNode(private val value: Int): INode {
+    override fun evaluate(vararg inputs: Int): Int {
         return value
     }
 
@@ -66,7 +66,7 @@ fun makeRandomTree(parametersSize: Int, maxDepth: Int = 4, fNodePr: Double = 0.5
             Node(wrapper, children)
         }
         Random.nextDouble() < pNodePr -> ParamNode(Random.nextInt(0, parametersSize))
-        else -> ConstNode(Random.nextDouble(0.0, 10.0))
+        else -> ConstNode(Random.nextInt(0, 10))
     }
 
 /**
@@ -84,23 +84,19 @@ private val ifW = Wrapper(name = "if", childCount = 3) {
     else it[2]
 }
 private val gtW = Wrapper(name = "gt", childCount = 2) {
-    if(it[0] > it[1]) 1.0
-    else 0.0
+    if(it[0] > it[1]) 1
+    else 0
 }
 
 private val wrappers = listOf(addW, subW, mulW, ifW, gtW)
 fun main() {
-    val t1 = makeRandomTree(parametersSize = 1, wrappers = wrappers)
-    val t2 = makeRandomTree(parametersSize = 2, wrappers = wrappers)
-    val t3 = makeRandomTree(parametersSize = 3, wrappers = wrappers)
+    val rt = makeRandomTree(parametersSize = 2, wrappers = wrappers)
+    rt.display()
 
-    t1.display()
-    println("---")
-    t2.display()
-    println("---")
-    t3.display()
-    println("---")
+    println(">>>Op 1<<<")
+    println( rt.evaluate(2,5) )
 
-
+    println(">>>Op 2<<<")
+    println( rt.evaluate(-2, 10) )
 }
 
