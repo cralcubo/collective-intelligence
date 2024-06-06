@@ -112,8 +112,8 @@ fun main() {
 //    run()
 //    test()
 //    runByEntity("Intouchables (2011)")
-//    runTag()
-    runMix("Driving Miss Daisy (1989)")
+    runTag()
+//    runMix("Driving Miss Daisy (1989)")
 }
 
 private fun createItems(genres: Set<String>, tags:Set<String>): Set<Item> {
