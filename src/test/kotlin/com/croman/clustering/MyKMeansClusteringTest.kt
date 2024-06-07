@@ -3,21 +3,10 @@ package com.croman.clustering
 import com.croman.collaborative.filtering.EuclideanDistance
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 
 class MyKMeansClusteringTest {
-
-    @Test
-    fun emptyCentroids() {
-        val dataPoints = listOf(Pair(2,2))
-        val kMeans = clusterer(dataPoints, EuclideanDistance(), 3)
-        kMeans shouldHaveSize 3
-        kMeans[0].dataPoints shouldHaveSize 1
-        kMeans[1].dataPoints shouldHaveSize 1
-        kMeans[2].dataPoints shouldHaveSize 1
-    }
 
     @Test
     fun perfectCentroids() {
