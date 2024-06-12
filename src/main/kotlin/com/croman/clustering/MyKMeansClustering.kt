@@ -21,6 +21,7 @@ fun clusterer(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, 
             Random.nextInt(minY, maxY + 1)
         )
     }
+    println("Centroids:$centroids")
 
     var bestCentroids = centroids
     var bestClusters = emptyList<KCluster>()
@@ -46,10 +47,11 @@ fun clusterer(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, 
             }
 
         if (bestCentroids == movableCentroids) {
+            println("Iterations: $i")
             break
         }
 
-        bestCentroids = movableCentroids
+        bestCentroids = movableCentroids.shuffled()
     }
 
     return bestClusters
