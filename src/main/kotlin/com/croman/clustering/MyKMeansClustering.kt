@@ -4,74 +4,71 @@ import com.croman.collaborative.filtering.SimilarityCalculator
 import com.croman.utils.Entity
 import com.croman.utils.Item
 import kotlin.math.roundToInt
-import kotlin.random.Random
 
 data class KCluster(val centroid: Pair<Int, Int>, val dataPoints: List<Pair<Int, Int>>)
 
 
 @Throws(IllegalArgumentException::class)
 fun clusterer(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, k: Int): List<KCluster> {
-    val (minX, maxX) = dataPoints.map { it.first }.let { it.min() to it.max() }
-    val (minY, maxY) = dataPoints.map { it.second }.let { it.min() to it.max() }
-
-    // create k random centroids between the min and max dataPoints
-    val centroids = List(k) {
-        Pair(
-            Random.nextInt(minX, maxX + 1),
-            Random.nextInt(minY, maxY + 1)
-        )
-    }
+    val centroids = centroids(dataPoints, distance, k)
     println("Centroids:$centroids")
 
     var bestCentroids = centroids
-    var bestClusters = emptyList<KCluster>()
 
     // Loop a max of 100 times to place the centroids on their correct spots
     for (i in 0..100) {
-        var divider = k
-        var leftDataPoints = dataPoints
+        val clusters = dataPoints.map { point ->
+            val centroid = bestCentroids.maxBy { centroid -> distance.calculate(centroid.toEntity(), point.toEntity()) }
+            centroid to point
+        }.groupBy({ it.first }, { it.second })
+            .map { KCluster(it.key, it.value) }
 
-        bestClusters = bestCentroids.map {
-            val bestSpace = bestSpaceFinderByDividedSize(leftDataPoints, it, distance, divider--)
-            // remove the points from the best space
-            leftDataPoints = leftDataPoints - bestSpace.toSet()
-            KCluster(it, bestSpace)
-        }.toList()
-
-        // move the centroids closer to the points assigned to them
-        val movableCentroids = bestClusters.map { it.dataPoints }
-            .map { space ->
-                val avgX = space.map { it.first }.average()
-                val avgY = space.map { it.second }.average()
-                Pair(avgX.roundToInt(), avgY.roundToInt())
-            }
+        val movableCentroids = clusters.map {
+            val avgX = it.dataPoints.map { p -> p.first }.average()
+            val avgY = it.dataPoints.map { p -> p.second }.average()
+            Pair(avgX.roundToInt(), avgY.roundToInt())
+        }
 
         if (bestCentroids == movableCentroids) {
             println("Iterations: $i")
-            break
+            return clusters
         }
 
-        bestCentroids = movableCentroids.shuffled()
+        bestCentroids = movableCentroids
     }
 
-    return bestClusters
+    return emptyList()
 }
 
-private fun bestSpaceFinderByDividedSize(
+private fun centroids(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, k: Int): List<Pair<Int, Int>> {
+    require(k > 1) { "At least 2 centroids are required" }
+
+    val c1 = dataPoints.random()
+    // next centroid is the one that is the farthest away
+    val c2 = dataPoints.minBy { distance.calculate(it.toEntity(), c1.toEntity()) }
+
+    return centroidsCollector(mutableListOf(c1, c2), dataPoints, distance, k)
+}
+
+private tailrec fun centroidsCollector(
+    mutableCentroids: MutableList<Pair<Int, Int>>,
     dataPoints: List<Pair<Int, Int>>,
-    centroid: Pair<Int, Int>,
     distance: SimilarityCalculator,
-    divider: Int
+    k: Int
 ): List<Pair<Int, Int>> {
+    if (k == mutableCentroids.size) {
+        return mutableCentroids
+    }
 
-    // Sort all the dataPoints by distance
-    // the closer they are the closer the value is to 1
-    val closestPoints = dataPoints.map { it to distance.calculate(centroid.toEntity(), it.toEntity()) }
-        .sortedByDescending { it.second }
-        .map { it.first }
-        .take(dataPoints.size / divider)
+    val newCentroid = dataPoints.map { point ->
+        val centroid = mutableCentroids.maxBy { centroid -> distance.calculate(centroid.toEntity(), point.toEntity()) }
+        point to distance.calculate(centroid.toEntity(), point.toEntity())
+    }.minBy { it.second }
+        .first
 
-    return closestPoints
+    mutableCentroids.add(newCentroid)
+
+    return centroidsCollector(mutableCentroids, dataPoints, distance, k)
 }
 
 private fun Pair<Int, Int>.toEntity(n: String = "e_${System.currentTimeMillis()}") =
