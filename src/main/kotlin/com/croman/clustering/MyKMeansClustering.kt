@@ -10,10 +10,11 @@ data class KCluster(val centroid: Pair<Int, Int>, val dataPoints: List<Pair<Int,
 
 @Throws(IllegalArgumentException::class)
 fun clusterer(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, k: Int): List<KCluster> {
-    val centroids = centroids(dataPoints, distance, k)
-    println("Centroids:$centroids")
+    if(dataPoints.isEmpty()) {
+        return emptyList()
+    }
 
-    var bestCentroids = centroids
+    var bestCentroids = pickCentroids(dataPoints, distance, k)
 
     // Loop a max of 100 times to place the centroids on their correct spots
     for (i in 0..100) {
@@ -40,7 +41,7 @@ fun clusterer(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, 
     return emptyList()
 }
 
-private fun centroids(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, k: Int): List<Pair<Int, Int>> {
+private fun pickCentroids(dataPoints: List<Pair<Int, Int>>, distance: SimilarityCalculator, k: Int): List<Pair<Int, Int>> {
     require(k > 1) { "At least 2 centroids are required" }
 
     val c1 = dataPoints.random()
@@ -63,8 +64,7 @@ private tailrec fun centroidsCollector(
     val newCentroid = dataPoints.map { point ->
         val centroid = mutableCentroids.maxBy { centroid -> distance.calculate(centroid.toEntity(), point.toEntity()) }
         point to distance.calculate(centroid.toEntity(), point.toEntity())
-    }.minBy { it.second }
-        .first
+    }.minBy { it.second }.first
 
     mutableCentroids.add(newCentroid)
 
