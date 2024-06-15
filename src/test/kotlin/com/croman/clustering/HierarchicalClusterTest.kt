@@ -1,7 +1,7 @@
 package com.croman.clustering
 
 import com.croman.utils.Entity
-import com.croman.utils.Item
+import com.croman.utils.Value
 import com.croman.collaborative.filtering.SimilarityCalculator
 import com.croman.collaborative.filtering.TanimotoCoefficient
 import io.kotest.matchers.shouldBe
@@ -28,26 +28,26 @@ class HierarchicalClusterTest {
         val e1 = Entity(
             "1",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("c", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("c", 1.0),
             )
         )
         val e2 = Entity(
             "2",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("z", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("z", 1.0),
             )
         )
 
         val e3 = Entity(
             "3",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("c", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("c", 1.0),
             )
         )
         val cluster = clusterCreator(listOf(e1, e2, e3), TanimotoCoefficient())

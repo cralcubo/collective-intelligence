@@ -20,11 +20,11 @@ class EuclideanDistance : SimilarityCalculator {
      */
     override fun calculate(e1: Entity, e2: Entity): Double {
         // find common items and calc Sum(i2 - i1)^2
-        val sumPows = e1.items.asSequence()
+        val sumPows = e1.values.asSequence()
             .flatMap { i1 ->
-                e2.items.asSequence()
+                e2.values.asSequence()
                     .filter { i1.id == it.id }
-                    .map { i1.value - it.value }
+                    .map { i1.weight - it.weight }
                     .map { it.pow(2) }
             }
             .sum()

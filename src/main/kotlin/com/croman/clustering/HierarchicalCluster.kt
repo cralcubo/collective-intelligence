@@ -37,7 +37,7 @@ class BiCluster(val left: Cluster, val right: Entity, level: Int, similarity: Do
  * to create a new entity
  */
 private fun Entity.mergeTo(e2: Entity) =
-    Entity(UUID.randomUUID().toString(), this.items.intersect(e2.items))
+    Entity(UUID.randomUUID().toString(), this.values.intersect(e2.values))
 
 
 private fun superClusterCreator(innerCluster: Cluster, entities: List<Entity>, similarityMeasurer: SimilarityCalculator) : Cluster {
@@ -116,9 +116,9 @@ fun main() {
 //    runMix("Driving Miss Daisy (1989)")
 }
 
-private fun createItems(genres: Set<String>, tags:Set<String>): Set<Item> {
-    val gi = genres.map { Item(it.lowercase(), 1.0) }.toSet()
-    val gt = tags.map { Item(it.lowercase(), 1.0) }.toSet()
+private fun createItems(genres: Set<String>, tags:Set<String>): Set<Value> {
+    val gi = genres.map { Value(it.lowercase(), 1.0) }.toSet()
+    val gt = tags.map { Value(it.lowercase(), 1.0) }.toSet()
     return gi + gt
 }
 
@@ -133,7 +133,7 @@ private fun runTagByEntity(entityId: String) {
 
     val entities = tags.mapNotNull {
         movies.find { m -> m.movieId == it.movieId }?.let { m ->
-            Entity(m.title, it.tags.map { t -> Item(t.lowercase(), 1.0) }.toSet() )
+            Entity(m.title, it.tags.map { t -> Value(t.lowercase(), 1.0) }.toSet() )
         }
     }
     runEntity(entityId, entities)
@@ -150,7 +150,7 @@ private fun runTag() {
 
     val entities = tags.mapNotNull {
         movies.find { m -> m.movieId == it.movieId }?.let { m ->
-            Entity(m.title, it.tags.map { t -> Item(t, 1.0) }.toSet() )
+            Entity(m.title, it.tags.map { t -> Value(t, 1.0) }.toSet() )
         }
     }
     runAll(entities)
@@ -160,26 +160,26 @@ private fun test() {
     val e1 = Entity(
         "1",
         setOf(
-            Item("a", 1.0),
-            Item("b", 1.0),
-            Item("c", 1.0),
+            Value("a", 1.0),
+            Value("b", 1.0),
+            Value("c", 1.0),
         )
     )
     val e2 = Entity(
         "2",
         setOf(
-            Item("a", 1.0),
-            Item("b", 1.0),
-            Item("z", 1.0),
+            Value("a", 1.0),
+            Value("b", 1.0),
+            Value("z", 1.0),
         )
     )
 
     val e3 = Entity(
         "3",
         setOf(
-            Item("a", 1.0),
-            Item("b", 1.0),
-            Item("c", 1.0),
+            Value("a", 1.0),
+            Value("b", 1.0),
+            Value("c", 1.0),
         )
     )
     val cluster = clusterCreator(listOf(e1, e2, e3), TanimotoCoefficient())
@@ -195,7 +195,7 @@ private fun run() {
         Paths.get("/Users/croman/git/collective-intelligence/src/main/resources/com/croman/collaborative/filtering/movie-lens/movies.csv")
     val movies = MovieLensFactory.createMovies(path)
     val entities = movies.map {
-        Entity(it.title, it.genres.map { g -> Item(g, 1.0) }.toSet())
+        Entity(it.title, it.genres.map { g -> Value(g, 1.0) }.toSet())
     }
     runAll(entities)
 }
@@ -205,7 +205,7 @@ private fun runByEntity(entityId: String) {
         Paths.get("/Users/croman/git/collective-intelligence/src/main/resources/com/croman/collaborative/filtering/movie-lens/movies.csv")
     val movies = MovieLensFactory.createMovies(path)
     val entities = movies.map {
-        Entity(it.title, it.genres.map { g -> Item(g, 1.0) }.toSet())
+        Entity(it.title, it.genres.map { g -> Value(g, 1.0) }.toSet())
     }
 
     runEntity(entityId, entities)
@@ -266,7 +266,7 @@ private fun runMix(entityId: String) {
 
 
 private fun Cluster.print() {
-    val itemsStr : (Entity)-> String = { it.items.joinToString { i -> i.id } }
+    val itemsStr : (Entity)-> String = { it.values.joinToString { i -> i.id } }
     when(this) {
         is BiCluster -> "${this.right.id}[${itemsStr(this.right)}]: [${this.similarity}]"
         is EntityCluster -> "${this.left.id}[${itemsStr(this.left)}] -- ${this.right.id}[${itemsStr(this.right)}]: [${this.similarity}]"

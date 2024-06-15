@@ -18,11 +18,11 @@ class PearsonCorrelation: SimilarityCalculator {
 
     override fun calculate(e1: Entity, e2: Entity): Double {
         // find common items and proceed with calculations
-        val calculator = e1.items.asSequence()
+        val calculator = e1.values.asSequence()
             .flatMap { i1 ->
-                e2.items.asSequence()
+                e2.values.asSequence()
                     .filter { i1.id == it.id }
-                    .map { i1.value to it.value }
+                    .map { i1.weight to it.weight }
             }.toList().let { Calculator(it) }
 
         // To calculate the correlation we should have at least

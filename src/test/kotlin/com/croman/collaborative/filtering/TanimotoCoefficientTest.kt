@@ -1,7 +1,7 @@
 package com.croman.collaborative.filtering
 
 import com.croman.utils.Entity
-import com.croman.utils.Item
+import com.croman.utils.Value
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -12,9 +12,9 @@ class TanimotoCoefficientTest {
         val e1 = Entity(
             "1",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("c", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("c", 1.0),
                 )
         )
 
@@ -26,17 +26,17 @@ class TanimotoCoefficientTest {
         val e1 = Entity(
             "1",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("c", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("c", 1.0),
             )
         )
         val e2 = Entity(
             "2",
             setOf(
-                Item("x", 1.0),
-                Item("y", 1.0),
-                Item("z", 1.0),
+                Value("x", 1.0),
+                Value("y", 1.0),
+                Value("z", 1.0),
             )
         )
 
@@ -48,17 +48,17 @@ class TanimotoCoefficientTest {
         val e1 = Entity(
             "1",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("c", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("c", 1.0),
             )
         )
         val e2 = Entity(
             "2",
             setOf(
-                Item("a", 1.0),
-                Item("b", 1.0),
-                Item("z", 1.0),
+                Value("a", 1.0),
+                Value("b", 1.0),
+                Value("z", 1.0),
             )
         )
 

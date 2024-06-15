@@ -13,8 +13,8 @@ class TanimotoCoefficient: SimilarityCalculator {
      * J = |A intersect B| / |A union B|
      */
     override fun calculate(e1: Entity, e2: Entity): Double {
-        val intersection = e1.items intersect e2.items
-        val union = e1.items union e2.items
+        val intersection = e1.values intersect e2.values
+        val union = e1.values union e2.values
         return intersection.size.toDouble() / union.size
     }
 }
