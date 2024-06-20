@@ -2,7 +2,7 @@ package com.croman.clustering
 
 import com.croman.collaborative.filtering.SimilarityCalculator
 import com.croman.utils.Entity
-import com.croman.utils.Value
+import com.croman.utils.Feature
 
 data class KCluster(val centroid: Entity, val dataPoints: List<Entity>)
 
@@ -69,14 +69,14 @@ private tailrec fun centroidsCollector(
 
 private fun averageEntity(entities: List<Entity>) : Entity {
     // calc the average weight of all the values
-    val values = entities.flatMap { it.values }
+    val features = entities.flatMap { it.features }
         .groupBy ({ it.id }, {it.weight} )
-        .map { Value(it.key, it.value.average()) }
+        .map { Feature(it.key, it.value.average()) }
         .toSet()
 
     return Entity(
         id = "e_${System.currentTimeMillis()}",
-        values = values
+        features = features
     )
 }
 

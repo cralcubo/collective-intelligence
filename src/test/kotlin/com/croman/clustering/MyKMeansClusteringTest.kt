@@ -2,7 +2,7 @@ package com.croman.clustering
 
 import com.croman.collaborative.filtering.EuclideanDistance
 import com.croman.utils.Entity
-import com.croman.utils.Value
+import com.croman.utils.Feature
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import kotlin.math.roundToInt
@@ -57,8 +57,8 @@ class MyKMeansClusteringTest {
 }
 
 private fun Entity.toPair(): Pair<Int, Int> {
-    val x = this.values.find { it.id == "x" }!!.weight
-    val y = this.values.find { it.id == "y" }!!.weight
+    val x = this.features.find { it.id == "x" }!!.weight
+    val y = this.features.find { it.id == "y" }!!.weight
     return x.roundToInt() to y.roundToInt()
 }
 
@@ -68,8 +68,8 @@ private fun Entity.toPair(): Pair<Int, Int> {
 private fun Pair<Int, Int>.toEntity(n: String = "e_${System.currentTimeMillis()}") =
     Entity(
         id = n,
-        values = setOf(
-            Value("x", first.toDouble()),
-            Value("y", second.toDouble())
+        features = setOf(
+            Feature("x", first.toDouble()),
+            Feature("y", second.toDouble())
         )
     )

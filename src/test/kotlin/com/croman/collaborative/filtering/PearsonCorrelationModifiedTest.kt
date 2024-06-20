@@ -5,9 +5,9 @@ import com.croman.utils.Feature
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class PearsonCorrelationTest {
+class PearsonCorrelationModifiedTest {
 
-    private val filter = PearsonCorrelation()
+    private val filter = PearsonCorrelationModified(1)
 
     @Test
     fun calculateZeroItemsInCommon() {
@@ -27,7 +27,7 @@ class PearsonCorrelationTest {
             )
         )
 
-        filter.calculate(e1,e2) shouldBe -1.0
+        filter.calculate(e1,e2) shouldBe 0.0
     }
 
     @Test
@@ -46,18 +46,19 @@ class PearsonCorrelationTest {
             )
         )
 
-        filter.calculate(e1,e2) shouldBe -1.0
+        filter.calculate(e1,e2) shouldBe 0.0
     }
 
-
     @Test
-    fun calculateTwoItems() {
+    fun calculateRepeatedWeights() {
         val e1 = Entity(
             id = "1",
             features = setOf(
                 Feature("A", 4.0),
                 Feature("B", 4.0),
                 Feature("C", 4.0),
+                Feature("D", 7.0),
+                Feature("E", 8.0),
             )
         )
 
@@ -67,6 +68,8 @@ class PearsonCorrelationTest {
                 Feature("A", 5.0),
                 Feature("B", 5.0),
                 Feature("C", 5.0),
+                Feature("D", 8.0),
+                Feature("E", 9.0),
             )
         )
 
@@ -74,7 +77,34 @@ class PearsonCorrelationTest {
     }
 
     @Test
-    fun calculateCorrelativeItems() {
+    fun calculatePositiveCorrelativeItems() {
+        val e1 = Entity(
+            id = "1",
+            features = setOf(
+                Feature("1", 4.0),
+                Feature("2", 5.0),
+                Feature("3", 6.0),
+                Feature("4", 7.0),
+                Feature("5", 8.0),
+            )
+        )
+
+        val e2 = Entity(
+            id = "2",
+            features = setOf(
+                Feature("1", 5.0),
+                Feature("2", 6.0),
+                Feature("3", 7.0),
+                Feature("4", 8.0),
+                Feature("5", 9.0),
+            )
+        )
+
+        filter.calculate(e1,e2) shouldBe 1.0
+    }
+
+    @Test
+    fun calculateNegativeCorrelativeItems() {
         val e1 = Entity(
             id = "1",
             features = setOf(
@@ -88,14 +118,14 @@ class PearsonCorrelationTest {
         val e2 = Entity(
             id = "2",
             features = setOf(
-                Feature("1", 7.0),
-                Feature("2", 9.0),
-                Feature("3", 5.0),
-                Feature("4", 10.0),
+                Feature("1", -7.0),
+                Feature("2", -9.0),
+                Feature("3", -5.0),
+                Feature("4", -10.0),
             )
         )
 
-        filter.calculate(e1,e2) shouldBe 1.0
+        filter.calculate(e1,e2) shouldBe -1.0
     }
 
     @Test
