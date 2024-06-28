@@ -27,7 +27,7 @@ class PearsonCorrelationModified(private val minSize: Int=10): SimilarityCalcula
             }.toList().let { Calculator(it) }
 
         // To calculate the correlation we should have at least
-        // 2 values in the calculator (only 2 points can make a line to see if it correlates)
+        // minSize values in the calculator
         return evalIf(calculator.N > minSize) {
             calculator.run {
                 val numerator = (sumXY - (sumX * sumY / N))

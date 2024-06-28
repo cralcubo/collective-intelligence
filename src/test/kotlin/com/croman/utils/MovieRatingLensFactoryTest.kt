@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import java.nio.file.Paths
 
-class MovieLensFactoryTest {
+class MovieRatingLensFactoryTest {
 
     @Test
     fun createTags() {
-        val url = MovieLensFactoryTest::class.java.getResource("tags.csv")
+        val url = MovieRatingLensFactoryTest::class.java.getResource("tags.csv")
         assertNotNull(url)
 
         val tags = createTags(Paths.get(url.toURI()))
@@ -24,7 +24,7 @@ class MovieLensFactoryTest {
 
     @Test
     fun createMovies() {
-        val url = MovieLensFactoryTest::class.java.getResource("movies.csv")
+        val url = MovieRatingLensFactoryTest::class.java.getResource("movies.csv")
         assertNotNull(url)
 
         val movies = createMovies(Paths.get(url.toURI()))
@@ -41,7 +41,7 @@ class MovieLensFactoryTest {
 
     @Test
     fun createRatings() {
-        val url = MovieLensFactoryTest::class.java.getResource("ratings.csv")
+        val url = MovieRatingLensFactoryTest::class.java.getResource("ratings.csv")
         assertNotNull(url)
 
         val ratings = MovieLensFactory.createRatings(Paths.get(url.toURI()))
